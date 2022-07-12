@@ -1,0 +1,165 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img {
+  width: 100%;
+}
+a {
+  text-decoration: none;
+  color: #1c2e54;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  background: #f5f5f5;
+  color: #1c2e54;
+}
+header {
+  width: 100%;
+  /* height: 60px; */
+  background: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+}
+.left-side {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 30px 2rem;
+}
+.nav-links {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 20px;
+  gap: 50px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.right-side {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 20px 20px;
+  gap: 30px;
+}
+
+/* !main section */
+main {
+  width: 100%;
+  display: grid;
+}
+.products {
+  display: grid;
+  /* grid-auto-flow: column; */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  box-sizing: border-box;
+  gap: 30px;
+  padding: 30px 2rem;
+}
+.home-text {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  font-size: 12px;
+}
+.product-container {
+  height: auto;
+  width: 100%;
+  padding-bottom: 3rem;
+  cursor: pointer;
+}
+.product-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* !search input */
+.search {
+  visibility: hidden;
+}
+.search-content {
+  display: grid;
+  height: 100px;
+  /* width: 100%; */
+  display: grid;
+  place-items: center;
+  /* border: 1px solid ; */
+  margin: 0rem 25rem;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 0rem 1rem;
+}
+.text-and-delete-btn {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 40px;
+}
+.search-input {
+  height: 40px;
+  border: 1px solid #1c2e54;
+  border-radius: 5px;
+  padding: 0px 10px;
+  border: 1px solid blue;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1c2e54;
+}
+/* !end of search input styling */
+
+/* !footer */
+footer {
+  width: 100%;
+  height: 100px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  justify-content: space-between;
+  padding: 2rem 0rem;
+}
+.place {
+  display: grid;
+  grid-auto-flow: column;
+  place-items: center;
+  gap: 20px;
+}
+.place-icon {
+  height: 25px;
+}
+
+/* !product */
+
+.single-product {
+  display: grid;
+  grid-auto-flow: column;
+  padding: 2rem 5rem;
+  place-items: center;
+}
+.buy-img-product {
+  width: 60%;
+  height: 600px;
+}
+.name-and-button {
+  position: relative;
+  bottom: 250px;
+  left: -240px;
+  display: grid;
+  gap: 8px;
+}
+.add-to-cart {
+  background: #1c2e54;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
