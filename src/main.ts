@@ -2,11 +2,10 @@ import "./style.css";
 type State = {
   store: Store[];
   user: User[];
-  IsSearchBarActive: boolean;
+  modal:"search" | "bag" | "";
+  page: "home" | "Girls" | "Guys" | "Sale";
 };
-type IsSearchBarActive = {
-  isSearchBarActive: boolean;
-}
+
 type User = {
   firstName: string;
   lastName: string;
@@ -25,10 +24,11 @@ type Store = {
   stock: number;
 };
 
-let state = {
+let state:State = {
   store: [],
   user: [],
-  isSearchBarActive: false,
+  modal:"",
+  page: "home"
 };
 
 // !fetching data from the server
@@ -45,7 +45,21 @@ fetch("http://localhost:3005/users")
     state.user = data;
     render();
   });
-// !creating the product
+
+// ! rendering the girls page
+
+function renderGirlsProducts(){
+    let girlsProducts = state.store.filter(prod => prod.type==="Girls")
+    state.store= girlsProducts;
+    render();
+  }
+
+  let girlsProd = document.querySelector(".girls-link")
+  girlsProd.addEventListener("click", function(){
+    state.page = "Girls";
+    render()
+  });
+  // !creating the product
 function createProduct(product: Store) {
   let products = document.querySelector(".products");
   if (products == null) return;
@@ -142,37 +156,40 @@ function singleProductBuy(product: Store) {
 }
 
 // !crearting the search bar
-function createSearchBar() {
-  let main = document.querySelector("main");
-  if (main == null) return;
-  main.innerHTML = "";
+function createSearchBar(product: Element) {
+  let wrapper = document.createElement("div");
+  wrapper.classList.add("wrapper");
 
-  let searchBar = document.createElement("div");
-  searchBar.classList.add("search-bar");
-  let h1Element = document.createElement("h1");
-  h1Element.innerText = "Search for your favorite products";
-  let searchInput = document.createElement("input");
-  searchInput.classList.add("search-input");
-  searchInput.placeholder = "Search";
-  let searchButton = document.createElement("button");
-  searchButton.classList.add("search-button");
-  searchButton.innerText = "Search";
-  searchBar.append(h1Element,searchInput, searchButton);
+  let searchContainer = document.createElement("div");
 
-  main.append(searchBar);
+  let button = document.createElement("button");
+  button.innerHTML = "X";
+  button.className = "modal-close-button";
+  button.addEventListener("click",function(){
+    state.modal= "";
+    render();
+  })
+
+  let h2Element = document.createElement("h2");
+  h2Element.innerText = "Search";
+
+  let formEl = document.createElement("form");
+
+  let inputEl = document.createElement("input");
+  inputEl.className = "search-input";
+  formEl.append(inputEl);
+
+  searchContainer.append(button, h2Element, formEl);
+  wrapper.append(searchContainer);
+  product.append(wrapper);
 }
 
+let searchIcon = document.querySelector(".magnify-glass");
+searchIcon?.addEventListener("click", function(){
+  state.modal = "search";
+  render();
+})
 
-function toggleIsSearchBarActive() {
-  let searchIcon = document.querySelector(".magnify-glass");
-
-  searchIcon.addEventListener("click", (e) => {
-    e.preventDefault();
-    state.isSearchBarActive = !state.isSearchBarActive;
-    // render();
-    console.log(state.isSearchBarActive);
-  });
-}
 
 
 function render() {
@@ -180,14 +197,15 @@ function render() {
   if (products == null) return;
   products.innerHTML = "";
 
+  if (state.page === "Girls") {
+    renderGirlsProducts();
+  }
 
   for (let products of state.store) {
     createProduct(products);
   }
-  toggleIsSearchBarActive();
-  if (state.isSearchBarActive===true) {
-    createSearchBar();
-  }
-  checkDate(state.store[0].dateEntered);
+  if(state.modal==="search")createSearchBar(products);
 }
 render();
+
+
