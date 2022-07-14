@@ -2,7 +2,7 @@ import "./style.css";
 type State = {
   store: Store[];
   user: User[];
-  modal:"search" | "bag" | "";
+  modal: "search" | "bag" | "";
   page: "home" | "Girls" | "Guys" | "Sale";
 };
 
@@ -24,11 +24,11 @@ type Store = {
   stock: number;
 };
 
-let state:State = {
+let state: State = {
   store: [],
   user: [],
-  modal:"",
-  page: "home"
+  modal: "",
+  page: "home",
 };
 
 // !fetching data from the server
@@ -48,18 +48,40 @@ fetch("http://localhost:3005/users")
 
 // ! rendering the girls page
 
-function renderGirlsProducts(){
-    let girlsProducts = state.store.filter(prod => prod.type==="Girls")
-    state.store= girlsProducts;
-    render();
-  }
+function renderGirlsProducts() {
+  let girlsProducts = state.store.filter((prod) => prod.type === "Girls");
+  state.store = girlsProducts;
+  console.log(girlsProducts)
+}
+let girlsProd = document.querySelector(".girls-link");
+girlsProd.addEventListener("click", function () {
+  state.page = "Girls";
+  render();
+});
+// ! rendering the guys page
+function renderGuysProducts() {
+  let guysProducts = state.store.filter((prod) => prod.type === "Guys");
+  state.store = guysProducts;
+  console.log(guysProducts)
+}
 
-  let girlsProd = document.querySelector(".girls-link")
-  girlsProd.addEventListener("click", function(){
-    state.page = "Girls";
-    render()
-  });
-  // !creating the product
+let guysProd = document.querySelector(".guys-link");
+guysProd.addEventListener("click", function () {
+  state.page = "Guys";
+  render();
+});
+// !creating the home button
+function renderHomeProducts() {
+  let homeProducts = state.store.map((prod) => prod);
+  homeProducts = state.store;
+}
+
+let homeProd = document.querySelector(".title-hlx");
+homeProd.addEventListener("click", function () {
+  state.page = "home";
+  render()
+});
+// !creating the product
 function createProduct(product: Store) {
   let products = document.querySelector(".products");
   if (products == null) return;
@@ -93,31 +115,27 @@ function createProduct(product: Store) {
 }
 // !checking the day the item was entered
 function checkDate(date: Date) {
-  for(let element of state.store){
-      let dateEntered = new Date(date);
-      let today = new Date();
-      let diff = today.getTime() - dateEntered.getTime();
-      let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      console.log(days);
-      if(days < 350){
-          let product = document.querySelector(".products");
-          if (product == null) return;
-          let productContainer = document.querySelector(".product-container");
-          if (productContainer == null) return;
+  for (let element of state.store) {
+    let dateEntered = new Date(date);
+    let today = new Date();
+    let diff = today.getTime() - dateEntered.getTime();
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    console.log(days);
+    if (days < 350) {
+      let product = document.querySelector(".products");
+      if (product == null) return;
+      let productContainer = document.querySelector(".product-container");
+      if (productContainer == null) return;
 
-          let newTag = document.createElement("p");
-          newTag.classList.add("new-tag");
-          newTag.innerText = "New";
-          productContainer.prepend(newTag);
-          product.append(productContainer);
+      let newTag = document.createElement("p");
+      newTag.classList.add("new-tag");
+      newTag.innerText = "New";
+      productContainer.prepend(newTag);
+      product.append(productContainer);
     }
   }
-
 }
 // console.log(checkDate("2020-01-01"));
-
-
-
 
 // ! function to create a product when user buys one
 function singleProductBuy(product: Store) {
@@ -155,7 +173,7 @@ function singleProductBuy(product: Store) {
   container.append(singleProduct);
 }
 
-// !crearting the search bar
+// !creating the search bar
 function createSearchBar(product: Element) {
   let wrapper = document.createElement("div");
   wrapper.classList.add("wrapper");
@@ -165,10 +183,10 @@ function createSearchBar(product: Element) {
   let button = document.createElement("button");
   button.innerHTML = "X";
   button.className = "modal-close-button";
-  button.addEventListener("click",function(){
-    state.modal= "";
+  button.addEventListener("click", function () {
+    state.modal = "";
     render();
-  })
+  });
 
   let h2Element = document.createElement("h2");
   h2Element.innerText = "Search";
@@ -185,27 +203,32 @@ function createSearchBar(product: Element) {
 }
 
 let searchIcon = document.querySelector(".magnify-glass");
-searchIcon?.addEventListener("click", function(){
+searchIcon?.addEventListener("click", function () {
   state.modal = "search";
   render();
-})
-
-
-
+});
 function render() {
   let products = document.querySelector(".products");
   if (products == null) return;
   products.innerHTML = "";
 
   if (state.page === "Girls") {
+    products.innerHTML="";
     renderGirlsProducts();
+  }
+  if (state.page === "Guys") {
+    products.innerHTML = "";
+    renderGuysProducts();
+  }
+  if(state.page === "home"){
+      renderHomeProducts()
   }
 
   for (let products of state.store) {
     createProduct(products);
   }
-  if(state.modal==="search")createSearchBar(products);
+  if (state.modal === "search") createSearchBar(products);
+  console.log(state.page);
+
 }
 render();
-
-
